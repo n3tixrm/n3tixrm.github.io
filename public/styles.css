@@ -157,7 +157,8 @@ html.is-booting { overflow: hidden; }
 .brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; justify-self: start; }
 .brand-mark { width: 30px; height: 30px; }
 .brand-mark rect { fill: var(--accent); }
-.brand-mark path { fill: none; stroke: var(--accent-ink); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.brand-mark .mark-shield { fill: var(--accent-ink); }
+.brand-mark .mark-id { fill: var(--accent); }
 .brand-text { font: 600 15px/1 var(--display); letter-spacing: -0.01em; }
 .top-nav { display: flex; gap: 6px; }
 .top-nav a {
