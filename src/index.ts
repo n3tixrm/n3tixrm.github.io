@@ -44,7 +44,9 @@ function redirect(location: string, status: 301 | 302): Response {
 function cacheControlFor(pathname: string, isHtml: boolean): string {
   // Fonts and vendored libraries carry a version or never change: cache them for a year.
   if (pathname.startsWith("/fonts/") || pathname.startsWith("/vendor/")) return "public, max-age=31536000, immutable";
-  if (isHtml) return "public, max-age=0, must-revalidate";
+  // HTML, CSS and scripts revalidate on every load (the asset ETag makes that a cheap
+  // 304), so a deploy is visible immediately instead of after an hour of stale cache.
+  if (isHtml || /\.(css|js|webmanifest|xml|txt|svg)$/.test(pathname)) return "public, max-age=0, must-revalidate";
   return "public, max-age=3600, stale-while-revalidate=86400";
 }
 

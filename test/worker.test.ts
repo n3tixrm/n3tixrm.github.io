@@ -85,11 +85,11 @@ describe("static assets", () => {
     await res.arrayBuffer();
   });
 
-  it("serves CSS with a short cache and security headers", async () => {
+  it("serves CSS as revalidate-every-load with security headers", async () => {
     const res = await get("/styles.css");
     expect(res.status).toBe(200);
     expect(res.headers.get("Content-Type")).toContain("text/css");
-    expect(res.headers.get("Cache-Control")).toContain("max-age=3600");
+    expect(res.headers.get("Cache-Control")).toBe("public, max-age=0, must-revalidate");
     expect(res.headers.get("X-Frame-Options")).toBe("DENY");
     await res.text();
   });

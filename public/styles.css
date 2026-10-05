@@ -155,7 +155,7 @@ html.is-booting { overflow: hidden; }
 }
 .top.is-scrolled { background: rgb(11 24 23 / 0.82); backdrop-filter: blur(12px); box-shadow: 0 1px 0 var(--line); }
 .brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; justify-self: start; }
-.brand-mark { width: 30px; height: 30px; }
+.brand-mark { width: 40px; height: 40px; }
 .brand-mark rect { fill: var(--accent); }
 .brand-mark .mark-device { fill: var(--accent-ink); }
 .brand-mark .mark-shield { fill: var(--accent); }
