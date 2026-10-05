@@ -1,0 +1,12 @@
+{
+  "name": "Ryan McDowell",
+  "short_name": "McDowell",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#f4f2ed",
+  "theme_color": "#2443f5",
+  "icons": [
+    { "src": "/favicon.svg", "type": "image/svg+xml", "sizes": "any" },
+    { "src": "/apple-touch-icon.png", "type": "image/png", "sizes": "180x180" }
+  ]
+}

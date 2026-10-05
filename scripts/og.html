@@ -1,0 +1,52 @@
+<!doctype html>
+<!-- Source for public/og.png (1200×630). Regenerate with `npm run og`. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face { font-family: "Instrument Serif"; src: url("../public/fonts/instrument-serif-latin-400-normal.woff2"); }
+  @font-face { font-family: "Instrument Serif"; font-style: italic; src: url("../public/fonts/instrument-serif-latin-400-italic.woff2"); }
+  @font-face { font-family: "Geist"; font-weight: 100 900; src: url("../public/fonts/geist-latin-wght-normal.woff2"); }
+  @font-face { font-family: "Geist Mono"; font-weight: 100 900; src: url("../public/fonts/geist-mono-latin-wght-normal.woff2"); }
+  * { margin: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 64px 72px;
+    background: #f4f2ed;
+    color: #15140f;
+    font-family: "Geist", sans-serif;
+  }
+  body::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgb(21 20 15 / 0.14) 1px, transparent 1.2px);
+    background-size: 22px 22px;
+    -webkit-mask-image: radial-gradient(ellipse 60% 70% at 85% 20%, #000 15%, transparent 70%);
+  }
+  .top { display: flex; align-items: center; gap: 16px; font-size: 26px; font-weight: 560; position: relative; }
+  .top svg { width: 48px; height: 48px; }
+  .top .url { margin-left: auto; font-family: "Geist Mono", monospace; font-size: 20px; font-weight: 400; color: #78756b; }
+  h1 { position: relative; font-family: "Instrument Serif", serif; font-weight: 400; font-size: 104px; line-height: 0.95; letter-spacing: -0.02em; max-width: 980px; }
+  h1 em { color: #2443f5; }
+  .bottom { position: relative; display: flex; justify-content: space-between; align-items: baseline; padding-top: 24px; border-top: 1px solid #c3beb1; font-family: "Geist Mono", monospace; font-size: 18px; letter-spacing: 0.06em; text-transform: uppercase; color: #4a4841; }
+  .bottom span:first-child { color: #2443f5; }
+</style>
+</head>
+<body>
+  <div class="top">
+    <svg viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#2443f5"/><path d="M10 23V9h6a4 4 0 0 1 0 8h-6m6 0 5 6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Ryan McDowell
+    <span class="url">mcdowell.dev</span>
+  </div>
+  <h1>I build modern workplaces that are <em>secure by design.</em></h1>
+  <div class="bottom">
+    <span>Modern Workplace Architect</span>
+    <span>Founder, Netix Digital</span>
+  </div>
+</body>
+</html>
