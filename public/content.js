@@ -1,4 +1,4 @@
-// mcdowell.dev — content module.
+// mcdowell.dev: content module.
 // Everything the page says lives here: who Ryan is, the career path, the tool
 // stack, the links, and the five console sessions that play in the hero.
 // Edit this file to change words; styles.css and app.js only decide how it looks

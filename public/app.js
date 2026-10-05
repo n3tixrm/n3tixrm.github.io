@@ -1,4 +1,4 @@
-// mcdowell.dev — choreography layer. Everything here is progressive
+// mcdowell.dev: choreography layer. Everything here is progressive
 // enhancement: the document reads fine without it. Words live in content.js.
 import { boot as BOOT, commands as COMMANDS, sessions as SESSIONS } from "/content.js";
 import { createConsole } from "/console.js";

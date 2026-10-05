@@ -1,4 +1,4 @@
-// mcdowell.dev — the multi-session console in the hero.
+// mcdowell.dev: the multi-session console in the hero.
 // Several shells take turns: a command types itself, a result animates in,
 // then the next session gets the floor. No dependencies; colours come from
 // CSS (the panel's `is-<colour>` class sets --c) so charts use currentColor.
