@@ -4,15 +4,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Ryan McDowell — Modern Workplace Architect</title>
-  <meta name="description" content="Ryan McDowell is a Microsoft 365 specialist and Modern Workplace architect, and the founder of Netix Digital, a Microsoft-first, cybersecurity-led managed service provider for UK businesses.">
+  <meta name="description" content="Ryan McDowell is a Microsoft 365 specialist and Modern Workplace Architect, and the founder of Netix Digital, a Microsoft-first, cybersecurity-led managed service provider for UK businesses.">
   <link rel="canonical" href="https://mcdowell.dev/">
-  <meta name="theme-color" content="#06070a">
+  <meta name="theme-color" content="#0b1817">
   <meta name="color-scheme" content="dark">
 
   <meta property="og:type" content="profile">
   <meta property="og:site_name" content="Ryan McDowell">
   <meta property="og:title" content="Ryan McDowell — Modern Workplace Architect">
-  <meta property="og:description" content="Microsoft 365 specialist. Founder of Netix Digital. Identity, zero trust, endpoints and telemetry on the Microsoft cloud.">
+  <meta property="og:description" content="Microsoft 365 specialist. Founder of Netix Digital. Modern workplaces that are secure by design, measured end to end.">
   <meta property="og:url" content="https://mcdowell.dev/">
   <meta property="og:image" content="https://mcdowell.dev/og.png">
   <meta property="og:image:width" content="1200">
@@ -25,7 +25,7 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
-  <link rel="preload" href="/fonts/archivo-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/inter-tight-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/geist-mono-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/styles.css">
   <script src="/boot.js"></script>
@@ -44,232 +44,130 @@
     "jobTitle": "Modern Workplace Architect",
     "description": "Microsoft 365 specialist and founder of Netix Digital.",
     "worksFor": { "@type": "Organization", "name": "Netix Digital", "url": "https://netix.digital" },
-    "knowsAbout": ["Microsoft 365", "Microsoft Entra ID", "Microsoft Intune", "Conditional Access", "Zero trust", "Kusto Query Language", "Grafana", "PowerShell", "Microsoft Graph"],
+    "knowsAbout": ["Microsoft 365", "Microsoft Entra ID", "Microsoft Intune", "Conditional Access", "Zero trust", "Google Workspace", "ChromeOS", "PowerShell", "Microsoft Graph", "Kusto Query Language", "Grafana", "Datadog"],
     "sameAs": ["https://www.linkedin.com/in/rynm/", "https://github.com/n3tixrm", "https://netix.digital"]
   }
   </script>
 </head>
 <body>
+  <!-- Section prose, the stack, the career path and the links are rendered by the
+       Worker from public/content.js into the [data-render] elements below. -->
   <a class="skip" href="#main">Skip to content</a>
-  <div class="grain" aria-hidden="true"></div>
   <div class="progress" aria-hidden="true"><span></span></div>
 
-  <!-- Boot sequence: shown by boot.js on the first visit of a session, dismissed by app.js. -->
+  <!-- Connect sequence: shown by boot.js on the first visit of a session, dismissed by app.js. -->
   <div class="boot" id="boot" aria-hidden="true">
     <div class="boot-inner">
+      <p class="boot-title">Connecting sessions</p>
       <ol class="boot-lines mono" id="boot-lines"></ol>
       <div class="boot-bar"><span></span></div>
       <p class="boot-skip mono">press any key to skip</p>
     </div>
   </div>
 
-  <header class="hud">
+  <header class="top">
     <a class="brand" href="/" aria-label="Ryan McDowell, home">
-      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7"/><path d="M9 22.5 16 9.5l7 13M9 22.5h14" /><circle cx="9" cy="22.5" r="2.4"/><circle cx="23" cy="22.5" r="2.4"/><circle cx="16" cy="9.5" r="2.4"/></svg>
-      <span class="brand-text mono">mcdowell<span class="dim">.dev</span></span>
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9"/><path d="M9 21.5 16 10.5l7 11"/><path d="M12.5 21.5h7"/></svg>
+      <span class="brand-text">Ryan McDowell</span>
     </a>
-    <nav class="hud-nav" aria-label="Sections">
+    <nav class="top-nav" aria-label="Sections">
       <a href="#about" data-nav>About</a>
-      <a href="#practice" data-nav>Practice</a>
-      <a href="#trajectory" data-nav>Trajectory</a>
-      <a href="#netix" data-nav>Netix</a>
+      <a href="#stack" data-nav>Stack</a>
+      <a href="#career" data-nav>Career</a>
       <a href="#contact" data-nav>Contact</a>
     </nav>
-    <div class="hud-right">
-      <button class="kbd-btn mono" type="button" data-palette-open aria-label="Open the command palette">
-        <span>Menu</span><kbd>⌘K</kbd>
+    <div class="top-right">
+      <button class="kbd-btn" type="button" data-palette-open aria-label="Open the command palette">
+        <span>Menu</span><kbd class="mono">⌘K</kbd>
       </button>
     </div>
   </header>
 
   <main id="main">
-    <!-- 00 · Hero -->
+    <!-- 00 · Hero: the multi-session console -->
     <section class="hero" id="top" aria-labelledby="hero-title">
-      <div class="field-wrap" aria-hidden="true">
-        <canvas class="field" id="field"></canvas>
+      <div class="hero-head">
+        <div class="hero-id">
+          <h1 class="hero-title" id="hero-title" data-lines>Ryan McDowell</h1>
+          <p class="hero-sub" data-render="hero-sub">Modern Workplace Architect · Microsoft 365 Specialist · Founder &amp; Director, Netix Digital</p>
+        </div>
+        <p class="hero-badge chip is-mint"><span class="chip-dot" aria-hidden="true"></span>Open to consulting</p>
       </div>
-      <div class="hero-inner">
-        <p class="hero-kicker mono"><span class="pip" aria-hidden="true"></span>Identity verified <span class="sep">·</span> rendered at <span data-edge="colo">the edge</span></p>
-        <h1 class="hero-title" id="hero-title">
-          <span class="hero-line"><span data-scramble>Ryan</span></span>
-          <span class="hero-line"><span data-scramble>McDowell</span></span>
-        </h1>
-        <div class="hero-meta">
-          <p class="hero-role">Modern Workplace Architect<br>Microsoft 365 Specialist</p>
-          <p class="hero-tag">Possibility through <em>technology.</em></p>
+
+      <div class="console is-blue" id="console" data-console data-session="pwsh" aria-label="Interactive console">
+        <div class="console-bar">
+          <div class="console-tabs" role="tablist" aria-label="Console sessions">
+            <button class="tab is-blue is-active" role="tab" type="button" id="tab-pwsh" aria-controls="panel-pwsh" aria-selected="true" tabindex="0"><i aria-hidden="true"></i>pwsh</button>
+            <button class="tab is-mint" role="tab" type="button" id="tab-kql" aria-controls="panel-kql" aria-selected="false" tabindex="-1"><i aria-hidden="true"></i>kql</button>
+            <button class="tab is-yellow" role="tab" type="button" id="tab-gam" aria-controls="panel-gam" aria-selected="false" tabindex="-1"><i aria-hidden="true"></i>gam</button>
+            <button class="tab is-purple" role="tab" type="button" id="tab-graph" aria-controls="panel-graph" aria-selected="false" tabindex="-1"><i aria-hidden="true"></i>graph</button>
+            <button class="tab is-red" role="tab" type="button" id="tab-metrics" aria-controls="panel-metrics" aria-selected="false" tabindex="-1"><i aria-hidden="true"></i>metrics</button>
+          </div>
+          <p class="console-status mono"><span class="status-dot" aria-hidden="true"></span>connected via <span data-edge="colo">the edge</span></p>
+        </div>
+        <div class="console-progress is-blue" data-console-progress aria-hidden="true"></div>
+        <div class="console-body">
+          <div class="term mono" role="tabpanel" id="panel-pwsh" aria-labelledby="tab-pwsh" tabindex="0" data-render="console-fallback"></div>
+          <div class="term mono" role="tabpanel" id="panel-kql" aria-labelledby="tab-kql" tabindex="0" hidden></div>
+          <div class="term mono" role="tabpanel" id="panel-gam" aria-labelledby="tab-gam" tabindex="0" hidden></div>
+          <div class="term mono" role="tabpanel" id="panel-graph" aria-labelledby="tab-graph" tabindex="0" hidden></div>
+          <div class="term mono" role="tabpanel" id="panel-metrics" aria-labelledby="tab-metrics" tabindex="0" hidden></div>
+        </div>
+        <div class="console-foot mono">
+          <span>Microsoft Graph PowerShell · Log Analytics · Google Workspace · Graph API · Datadog</span>
+          <span class="console-hint">sessions take turns · pick a tab to jump in</span>
         </div>
       </div>
-      <div class="hero-hud mono" aria-hidden="true">
-        <div class="hud-cell"><span class="hud-k">Edge</span><span class="hud-v" data-edge="colo">—</span></div>
-        <div class="hud-cell"><span class="hud-k">Local</span><span class="hud-v" data-clock>--:--:--</span></div>
-        <div class="hud-cell"><span class="hud-k">Session</span><span class="hud-v" data-uptime>00:00:00</span></div>
-        <div class="hud-cell hud-scroll"><span class="hud-k">Scroll</span><span class="scroll-line"><i></i></span></div>
-      </div>
+      <p class="hero-tag">Possibility through <em>technology.</em></p>
     </section>
 
-    <!-- 01 · About / statement -->
+    <!-- 01 · Statement -->
     <section class="statement" id="about" aria-labelledby="about-title">
       <div class="statement-pin">
-        <p class="section-label mono"><span>01</span> About</p>
+        <p class="section-label"><span class="chip is-mint">01</span> About</p>
         <h2 class="sr-only" id="about-title">About</h2>
-        <p class="statement-text" data-words>I design modern workplaces on the Microsoft cloud that are secure by design: identity first, zero trust by default, observable end to end.</p>
-        <div class="statement-foot">
-          <p>Founder and Director of <a href="/netix">Netix Digital</a>, a Microsoft-first, cybersecurity-led managed service provider for UK businesses. Previously Workplace Technology Lead at NEXT Retail, leading modern workplace strategy at enterprise scale.</p>
-          <p class="mono dim">Always exploring automation, cloud security and better user experiences.</p>
+        <p class="statement-text" data-words data-render="statement">I build modern workplaces that are <em>secure by design</em>: Microsoft first, <em>Google</em> when it fits, and measured end to end.</p>
+        <div class="statement-foot" data-render="statement-foot">
+          <p>Microsoft 365 specialist and a qualified generalist across the suite.</p>
+          <p>Founder &amp; Director of Netix Digital.</p>
         </div>
       </div>
     </section>
 
-    <!-- 02 · Practice areas (horizontal on wide screens) -->
-    <section class="practice" id="practice" aria-labelledby="practice-title">
-      <div class="practice-pin">
-        <div class="practice-head">
-          <p class="section-label mono"><span>02</span> Practice</p>
-          <h2 class="section-title" id="practice-title" data-lines>Four disciplines, one secure workplace.</h2>
-          <p class="practice-counter mono" aria-hidden="true"><span data-panel-index>01</span><span class="dim">/04</span></p>
-        </div>
-        <div class="practice-track" data-track>
-          <article class="panel" data-panel>
-            <div class="panel-visual" aria-hidden="true">
-              <svg class="viz viz-identity" viewBox="0 0 320 320">
-                <circle class="ring ring-1" cx="160" cy="160" r="140"/>
-                <circle class="ring ring-2" cx="160" cy="160" r="104"/>
-                <circle class="ring ring-3" cx="160" cy="160" r="68"/>
-                <g class="orbit orbit-1"><circle cx="300" cy="160" r="4"/></g>
-                <g class="orbit orbit-2"><circle cx="56" cy="160" r="3"/></g>
-                <g class="orbit orbit-3"><circle cx="160" cy="92" r="3"/></g>
-                <path class="shield" d="M160 118l30 11v22c0 20-13 36-30 43-17-7-30-23-30-43v-22z"/>
-                <path class="tick" d="M146 162l10 10 20-22"/>
-              </svg>
-              <p class="viz-caption mono">policy · <b>grant</b> · mfa satisfied</p>
-            </div>
-            <div class="panel-body">
-              <p class="panel-index mono">01</p>
-              <h3 class="panel-title">Identity &amp; Security</h3>
-              <p class="panel-text">Entra ID, Conditional Access, single sign-on and zero-trust architecture. The identity is the perimeter, so it gets designed first.</p>
-              <ul class="chips mono" aria-label="Technologies">
-                <li>Entra ID</li><li>Conditional Access</li><li>SSO</li><li>Zero trust</li>
-              </ul>
-            </div>
-          </article>
-
-          <article class="panel" data-panel>
-            <div class="panel-visual" aria-hidden="true">
-              <div class="viz viz-fleet" data-fleet></div>
-              <p class="viz-caption mono">devices · <b data-fleet-count>0</b>/40 compliant</p>
-            </div>
-            <div class="panel-body">
-              <p class="panel-index mono">02</p>
-              <h3 class="panel-title">Modern Workplace</h3>
-              <p class="panel-text">Microsoft 365 end to end: Exchange Online, Teams, SharePoint, Intune and Autopilot. Devices that arrive sealed and leave the box ready to work.</p>
-              <ul class="chips mono" aria-label="Technologies">
-                <li>Microsoft 365</li><li>Exchange Online</li><li>Teams</li><li>SharePoint</li><li>Intune</li><li>Autopilot</li>
-              </ul>
-            </div>
-          </article>
-
-          <article class="panel" data-panel>
-            <div class="panel-visual" aria-hidden="true">
-              <div class="viz viz-chart">
-                <canvas data-chart></canvas>
-                <div class="chart-grid"></div>
-              </div>
-              <p class="viz-caption mono">SigninLogs | summarize count() by bin(TimeGenerated, 1h)</p>
-            </div>
-            <div class="panel-body">
-              <p class="panel-index mono">03</p>
-              <h3 class="panel-title">Observability</h3>
-              <p class="panel-text">Log Analytics, KQL and Grafana. If it isn't measured it isn't managed, and honestly, I'm obsessed with building pretty dashboards.</p>
-              <ul class="chips mono" aria-label="Technologies">
-                <li>Log Analytics</li><li>KQL</li><li>Grafana</li>
-              </ul>
-            </div>
-          </article>
-
-          <article class="panel" data-panel>
-            <div class="panel-visual" aria-hidden="true">
-              <svg class="viz viz-pipeline" viewBox="0 0 320 320">
-                <path class="pipe" d="M40 80 H120 Q140 80 140 100 V140 Q140 160 160 160 H280"/>
-                <path class="pipe" d="M40 240 H120 Q140 240 140 220 V180 Q140 160 160 160"/>
-                <path class="pipe pipe-flow" d="M40 80 H120 Q140 80 140 100 V140 Q140 160 160 160 H280"/>
-                <path class="pipe pipe-flow pipe-flow-2" d="M40 240 H120 Q140 240 140 220 V180 Q140 160 160 160"/>
-                <g class="node"><rect x="20" y="64" width="40" height="32" rx="6"/><text x="40" y="85">PS</text></g>
-                <g class="node"><rect x="20" y="224" width="40" height="32" rx="6"/><text x="40" y="245">LA</text></g>
-                <g class="node node-hub"><rect x="134" y="134" width="52" height="52" rx="10"/><text x="160" y="165">Graph</text></g>
-                <g class="node node-out"><rect x="262" y="144" width="40" height="32" rx="6"/><text x="282" y="165">365</text></g>
-              </svg>
-              <p class="viz-caption mono">Invoke-MgGraphRequest · <b>200 OK</b></p>
-            </div>
-            <div class="panel-body">
-              <p class="panel-index mono">04</p>
-              <h3 class="panel-title">Automation</h3>
-              <p class="panel-text">PowerShell, the Microsoft Graph API and Logic Apps. Anything done twice by hand becomes a pipeline that runs itself.</p>
-              <ul class="chips mono" aria-label="Technologies">
-                <li>PowerShell</li><li>Microsoft Graph</li><li>Logic Apps</li>
-              </ul>
-            </div>
-          </article>
-        </div>
+    <!-- 02 · Stack -->
+    <section class="stack" id="stack" aria-labelledby="stack-title">
+      <div class="wrap stack-head">
+        <p class="section-label"><span class="chip is-blue">02</span> Stack</p>
+        <h2 class="section-title" id="stack-title" data-lines>Five colours, <em>one</em> secure workplace.</h2>
+        <p class="section-intro">The tools I reach for every week, grouped the same way the console sessions are. Microsoft first, with Google Workspace and ChromeOS where they fit.</p>
       </div>
+      <ol class="blocks wrap" data-render="stack">
+        <li class="block is-blue"><div class="block-main"><h3 class="block-title">Endpoint &amp; devices</h3></div></li>
+      </ol>
     </section>
 
-    <!-- 03 · Trajectory -->
-    <section class="trajectory" id="trajectory" aria-labelledby="trajectory-title">
+    <!-- 03 · Career path -->
+    <section class="career" id="career" aria-labelledby="career-title">
       <div class="wrap">
-        <p class="section-label mono"><span>03</span> Trajectory</p>
-        <h2 class="section-title" id="trajectory-title" data-lines>From enterprise scale to first principles.</h2>
-        <ol class="timeline">
-          <span class="tl-rail" aria-hidden="true"><i data-tl-line></i></span>
-          <li class="tl-item" data-reveal>
-            <p class="tl-when mono">2024 — present</p>
-            <h3 class="tl-title">Founder &amp; Director, <a href="/netix">Netix Digital</a></h3>
-            <p class="tl-text">A Microsoft-first, cybersecurity-led managed service provider for UK businesses: secure tenancy design, identity architecture, endpoint management, networking and ongoing support.</p>
-          </li>
-          <li class="tl-item" data-reveal>
-            <p class="tl-when mono">Previously</p>
-            <h3 class="tl-title">Workplace Technology Lead, NEXT Retail</h3>
-            <p class="tl-text">Led modern workplace strategy at a major UK retailer: Microsoft 365 adoption, endpoint management and cloud identity at enterprise scale.</p>
-          </li>
-        </ol>
-      </div>
-    </section>
-
-    <!-- 04 · Netix Digital -->
-    <section class="netix" id="netix" aria-labelledby="netix-title">
-      <div class="netix-bg" aria-hidden="true">
-        <p class="netix-giant" data-parallax="-12">NETIX</p>
-      </div>
-      <div class="wrap netix-inner">
-        <p class="section-label mono"><span>04</span> Netix Digital</p>
-        <h2 class="section-title" id="netix-title" data-lines>Microsoft-first. Cybersecurity-led.</h2>
-        <p class="netix-text">Netix Digital is the managed service provider I founded for UK businesses that want their Microsoft cloud done properly: secure by design, measurable, and supported by people who have run it at scale.</p>
-        <div class="marquee" aria-hidden="true">
-          <div class="marquee-track">
-            <span>Secure tenancy design</span><span>Identity architecture</span><span>Endpoint management</span><span>Networking</span><span>Ongoing support</span>
-            <span>Secure tenancy design</span><span>Identity architecture</span><span>Endpoint management</span><span>Networking</span><span>Ongoing support</span>
-          </div>
+        <p class="section-label"><span class="chip is-purple">03</span> Career path</p>
+        <h2 class="section-title" id="career-title" data-lines>From enterprise scale to <em>first principles.</em></h2>
+        <div class="rail-wrap">
+          <span class="rail-line" aria-hidden="true"><i data-rail-line></i></span>
+          <ol class="rail" data-render="career">
+            <li class="employer"><h3 class="employer-name">Netix Digital</h3></li>
+          </ol>
         </div>
-        <ul class="sr-only">
-          <li>Secure tenancy design</li><li>Identity architecture</li><li>Endpoint management</li><li>Networking</li><li>Ongoing support</li>
-        </ul>
-        <a class="btn btn-accent" href="https://netix.digital" rel="noopener" data-magnetic data-cursor="Visit">
-          <span>netix.digital</span>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
-        </a>
       </div>
     </section>
 
-    <!-- 05 · Contact -->
+    <!-- 04 · Contact -->
     <section class="contact" id="contact" aria-labelledby="contact-title">
       <div class="wrap">
-        <p class="section-label mono"><span>05</span> Contact</p>
-        <h2 class="contact-title" id="contact-title" data-lines>Open to<br>consulting.</h2>
-        <p class="contact-text">If you're planning a tenancy, rethinking identity, or want dashboards that people actually look at, let's talk.</p>
-        <div class="contact-links">
-          <a class="btn" href="/linkedin" rel="noopener" data-magnetic data-cursor="Open">LinkedIn</a>
-          <a class="btn" href="/github" rel="noopener" data-magnetic data-cursor="Open">GitHub</a>
-          <a class="btn" href="/netix" rel="noopener" data-magnetic data-cursor="Open">Netix Digital</a>
-          <a class="btn btn-accent" href="/ryan-mcdowell.vcf" download data-magnetic data-cursor="Save">Contact card</a>
+        <p class="section-label"><span class="chip is-yellow">04</span> Contact</p>
+        <h2 class="contact-title" id="contact-title" data-lines>Open to <em>consulting.</em></h2>
+        <p class="contact-text">Planning a tenancy, rethinking identity, or want dashboards people actually look at? Let's talk.</p>
+        <div class="contact-links" data-render="links">
+          <a class="btn" href="/linkedin" rel="noopener">LinkedIn</a>
         </div>
       </div>
     </section>
@@ -278,12 +176,12 @@
   <footer class="footer mono">
     <div class="wrap footer-inner">
       <p>© <span data-edge="year">2026</span> Ryan McDowell</p>
-      <p class="dim">Rendered at the edge in <span data-edge="colo">—</span></p>
+      <p class="dim">Served from the edge in <span data-edge="colo">—</span></p>
       <p><a href="https://github.com/n3tixrm/n3tixrm.github.io" rel="noopener">Source</a> · <button type="button" class="link-btn" data-motion-toggle>Motion: <span data-motion-state>on</span></button></p>
     </div>
   </footer>
 
-  <!-- Command palette -->
+  <!-- Command palette: items come from content.js -->
   <dialog class="palette" id="palette" aria-label="Command palette">
     <div class="palette-box">
       <div class="palette-input-row">
@@ -291,21 +189,7 @@
         <input class="palette-input" type="text" placeholder="Type a command or search…" autocomplete="off" spellcheck="false" aria-label="Search commands" data-palette-input>
         <kbd class="mono">Esc</kbd>
       </div>
-      <ul class="palette-list" role="listbox" data-palette-list>
-        <li role="option" data-cmd="goto" data-arg="#top" data-keys="home hero top"><span>Go to top</span><kbd>↵</kbd></li>
-        <li role="option" data-cmd="goto" data-arg="#about" data-keys="about statement"><span>Go to About</span></li>
-        <li role="option" data-cmd="goto" data-arg="#practice" data-keys="practice skills identity workplace observability automation"><span>Go to Practice</span></li>
-        <li role="option" data-cmd="goto" data-arg="#trajectory" data-keys="trajectory experience career next netix"><span>Go to Trajectory</span></li>
-        <li role="option" data-cmd="goto" data-arg="#netix" data-keys="netix digital msp"><span>Go to Netix Digital</span></li>
-        <li role="option" data-cmd="goto" data-arg="#contact" data-keys="contact talk consulting"><span>Go to Contact</span></li>
-        <li role="option" data-cmd="open" data-arg="/linkedin" data-keys="linkedin social"><span>Open LinkedIn</span><kbd>↗</kbd></li>
-        <li role="option" data-cmd="open" data-arg="/github" data-keys="github code source"><span>Open GitHub</span><kbd>↗</kbd></li>
-        <li role="option" data-cmd="open" data-arg="https://netix.digital" data-keys="netix website"><span>Open netix.digital</span><kbd>↗</kbd></li>
-        <li role="option" data-cmd="download" data-arg="/ryan-mcdowell.vcf" data-keys="vcard contact card save"><span>Download contact card</span><kbd>.vcf</kbd></li>
-        <li role="option" data-cmd="copy" data-arg="https://mcdowell.dev/" data-keys="copy link url share"><span>Copy link to this page</span></li>
-        <li role="option" data-cmd="motion" data-keys="motion animation reduce toggle"><span>Toggle motion</span></li>
-        <li role="option" data-cmd="replay" data-keys="replay intro boot"><span>Replay intro</span></li>
-      </ul>
+      <ul class="palette-list" role="listbox" data-palette-list></ul>
       <p class="palette-empty mono dim" hidden>No matching command.</p>
     </div>
   </dialog>

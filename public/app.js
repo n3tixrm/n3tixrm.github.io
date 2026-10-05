@@ -1,6 +1,7 @@
 // mcdowell.dev — choreography layer. Everything here is progressive
-// enhancement: the document reads fine without it.
-import { start as startField } from "/field.js";
+// enhancement: the document reads fine without it. Words live in content.js.
+import { boot as BOOT, commands as COMMANDS, sessions as SESSIONS } from "/content.js";
+import { createConsole } from "/console.js";
 
 const root = document.documentElement;
 const q = (sel, el = document) => el.querySelector(sel);
@@ -30,25 +31,7 @@ function setMotion(on) {
   setTimeout(() => location.reload(), 350);
 }
 qa("[data-motion-toggle]").forEach((b) => b.addEventListener("click", () => setMotion(!motion)));
-if (!motion) root.classList.add("motion-off"); else root.classList.add("motion-on");
-
-/* ---- HUD: clock, uptime, scroll progress ----------------------------------- */
-{
-  const clock = q("[data-clock]");
-  const up = q("[data-uptime]");
-  const pad = (n) => String(n).padStart(2, "0");
-  const t0 = Date.now();
-  const tick = () => {
-    const d = new Date();
-    if (clock) clock.textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
-    if (up) {
-      const s = Math.floor((Date.now() - t0) / 1000);
-      up.textContent = `${pad(Math.floor(s / 3600))}:${pad(Math.floor((s % 3600) / 60))}:${pad(s % 60)}`;
-    }
-  };
-  tick();
-  setInterval(tick, 1000);
-}
+root.classList.add(motion ? "motion-on" : "motion-off");
 
 /* ---- Smooth scroll (Lenis) --------------------------------------------------- */
 let lenis = null;
@@ -74,52 +57,7 @@ qa('a[href^="#"]').forEach((a) => {
   });
 });
 
-/* ---- Hero field (WebGL) ------------------------------------------------------- */
-let field = null;
-{
-  const canvas = q("#field");
-  if (canvas) {
-    try { field = startField(canvas, { motion }); } catch (err) { console.warn("Field disabled:", err.message); }
-    if (!field) canvas.remove();
-  }
-}
-
-/* ---- Scramble text --------------------------------------------------------------- */
-const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>/_\\|[]{}";
-function scramble(el, { duration = 1.1, delay = 0 } = {}) {
-  const finalText = el.dataset.text || el.textContent;
-  el.dataset.text = finalText;
-  const n = finalText.length;
-  let start = 0;
-  return new Promise((resolve) => {
-    const frame = (now) => {
-      if (!start) start = now;
-      const t = (now - start) / 1000 - delay;
-      if (t < 0) return requestAnimationFrame(frame);
-      const prog = Math.min(1, t / duration);
-      let out = "";
-      for (let i = 0; i < n; i++) {
-        const ch = finalText[i];
-        if (ch === " ") { out += " "; continue; }
-        const local = prog * 1.6 - (i / n) * 0.6;
-        out += local >= 1 ? ch : local < 0.15 ? " " : GLYPHS[(Math.random() * GLYPHS.length) | 0];
-      }
-      el.textContent = out;
-      if (prog < 1) requestAnimationFrame(frame); else { el.textContent = finalText; resolve(); }
-    };
-    requestAnimationFrame(frame);
-  });
-}
-
-/* ---- Boot sequence ------------------------------------------------------------ */
-const BOOT_LINES = [
-  ["auth", "verifying identity", "ok"],
-  ["policy", "conditional access evaluated", "grant"],
-  ["device", "compliance check", "ok"],
-  ["edge", () => `serving from ${q('[data-edge="colo"]')?.textContent?.trim() || "the edge"}`, "ok"],
-  ["render", "mcdowell.dev", "ready"],
-];
-
+/* ---- Connect sequence (boot) ------------------------------------------------- */
 function runBoot() {
   return new Promise((resolve) => {
     const boot = q("#boot");
@@ -127,11 +65,21 @@ function runBoot() {
     const bar = q(".boot-bar span");
     if (!boot || !list || !root.classList.contains("is-booting")) { root.classList.remove("is-booting"); return resolve(false); }
 
-    list.innerHTML = "";
-    const items = BOOT_LINES.map(([k, msg, status]) => {
+    const colo = q('[data-edge="colo"]')?.textContent?.trim() || "the edge";
+    list.replaceChildren();
+    const items = BOOT.map(({ id, colour, text }) => {
       const li = document.createElement("li");
-      const m = typeof msg === "function" ? msg() : msg;
-      li.innerHTML = `<span class="k">${k.padEnd(7, " ")}</span> ${m} <span class="ok">· ${status}</span>`;
+      li.className = `is-${colour}`;
+      const chip = document.createElement("span");
+      chip.className = `chip is-${colour}`;
+      chip.textContent = id;
+      const msg = document.createElement("span");
+      msg.className = "msg";
+      msg.textContent = text.replace("{colo}", colo);
+      const tick = document.createElement("span");
+      tick.className = "tick";
+      tick.textContent = "✓";
+      li.append(chip, msg, tick);
       list.append(li);
       return li;
     });
@@ -150,42 +98,48 @@ function runBoot() {
     window.addEventListener("keydown", finish);
     boot.addEventListener("click", finish);
 
-    const step = 0.26;
-    items.forEach((li, i) => setTimeout(() => li.classList.add("on"), 120 + i * step * 1000));
+    const step = 0.22;
+    items.forEach((li, i) => setTimeout(() => li.classList.add("on"), 140 + i * step * 1000));
     if (hasGsap) gsap.fromTo(bar, { scaleX: 0 }, { scaleX: 1, duration: items.length * step + 0.3, ease: "power2.inOut" });
-    setTimeout(finish, items.length * step * 1000 + 650);
+    setTimeout(finish, items.length * step * 1000 + 700);
   });
 }
 
-/* ---- Hero intro --------------------------------------------------------------- */
-const heroTitle = q("#hero-title");
-const scrambleEls = qa("[data-scramble]");
-const heroBits = [q(".hero-kicker"), q(".hero-meta"), q(".hero-hud")].filter(Boolean);
+/* ---- Console ------------------------------------------------------------------- */
+let consoleCtl = null;
+{
+  const el = q("[data-console]");
+  if (el) {
+    // In motion mode the console waits for the connect sequence and hero intro.
+    try { consoleCtl = createConsole(el, SESSIONS, { motion, autostart: !motion }); } catch (err) { console.warn("Console disabled:", err); }
+  }
+}
 
-const hasHero = Boolean(heroTitle) && scrambleEls.length > 0;
-if (motion && hasGsap && hasHero) {
-  gsap.set(scrambleEls, { yPercent: 110 });
-  gsap.set(heroBits, { opacity: 0, y: 24 });
-  heroTitle.setAttribute("aria-label", "Ryan McDowell");
+/* ---- Hero intro ------------------------------------------------------------------- */
+const heroBits = [q(".hero-head"), q(".console"), q(".hero-tag")].filter(Boolean);
+if (motion && hasGsap && heroBits.length) {
+  gsap.set(q(".hero-head"), { opacity: 0, y: 18 });
+  gsap.set(q(".console"), { opacity: 0, y: 36, scale: 0.985 });
+  gsap.set(q(".hero-tag"), { opacity: 0, y: 10 });
 }
 root.classList.remove("pending");
 
 async function heroIntro() {
-  if (!(motion && hasGsap && hasHero)) return;
+  if (!(motion && hasGsap && heroBits.length)) return;
   const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
-  tl.to(scrambleEls, { yPercent: 0, duration: 1.1, stagger: 0.12 }, 0.05)
-    .to(heroBits, { opacity: 1, y: 0, duration: 1, stagger: 0.12 }, 0.6);
-  scrambleEls.forEach((el, i) => scramble(el, { duration: 1.0, delay: 0.15 + i * 0.14 }));
+  tl.to(q(".hero-head"), { opacity: 1, y: 0, duration: 1 }, 0.05)
+    .to(q(".console"), { opacity: 1, y: 0, scale: 1, duration: 1.2 }, 0.2)
+    .to(q(".hero-tag"), { opacity: 1, y: 0, duration: 0.8 }, 0.7);
   await tl.then();
-  heroTitle?.removeAttribute("aria-label");
 }
 
 /* ---- Scroll choreography -------------------------------------------------------- */
 function setupScroll() {
   if (!hasGsap) return;
-  const mm = gsap.matchMedia();
 
-  // Scroll progress rail and active nav.
+  // Top bar tint, progress rail and active nav.
+  const top = q(".top");
+  if (top) ScrollTrigger.create({ start: 40, end: "max", onToggle: (self) => top.classList.toggle("is-scrolled", self.isActive) });
   if (q(".progress span")) gsap.to(".progress span", { scaleX: 1, ease: "none", scrollTrigger: { trigger: document.body, start: "top top", end: "bottom bottom", scrub: 0.4 } });
   qa("[data-nav]").forEach((link) => {
     const section = q(link.getAttribute("href"));
@@ -195,28 +149,34 @@ function setupScroll() {
 
   if (!motion) return;
 
-  // Hero: parallax out, hand scroll progress to the shader.
+  // Hero: the console recedes as you scroll away.
   const hero = q(".hero");
-  if (hero) gsap.timeline({ scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: true, onUpdate: (self) => field?.setScroll(self.progress) } })
-    .to(".hero-inner", { y: 160, opacity: 0, ease: "none" }, 0)
-    .to(".hero-hud", { opacity: 0, ease: "none" }, 0);
+  if (hero) gsap.timeline({ scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: true } })
+    .to(".console", { y: 120, scale: 0.96, opacity: 0.25, ease: "none" }, 0)
+    .to(".hero-head, .hero-tag", { opacity: 0, y: -30, ease: "none" }, 0);
 
-  // Statement: pinned, words light up as you scroll.
+  // Statement: pinned, words light up as you scroll; <em> words go mint.
   const statement = q("[data-words]");
   if (statement) {
-    const words = statement.textContent.trim().split(/\s+/);
-    const phrase = ["secure", "by", "design:"];
-    const hotStart = words.findIndex((_, i) => phrase.every((w, j) => words[i + j] === w));
-    const hotIndex = new Set(hotStart < 0 ? [] : phrase.map((_, j) => hotStart + j));
-    statement.textContent = "";
-    const spans = words.map((w, i) => {
-      const s = document.createElement("span");
-      s.className = "w";
-      s.textContent = w;
-      if (hotIndex.has(i)) s.dataset.hot = "";
-      statement.append(s, " ");
-      return s;
+    const frag = document.createDocumentFragment();
+    const spans = [];
+    const addWords = (text, hot) => {
+      text.split(/(\s+)/).forEach((part) => {
+        if (!part) return;
+        if (/^\s+$/.test(part)) { frag.append(" "); return; }
+        const s = document.createElement("span");
+        s.className = "w";
+        s.textContent = part;
+        if (hot) s.dataset.hot = "";
+        frag.append(s);
+        spans.push(s);
+      });
+    };
+    statement.childNodes.forEach((node) => {
+      if (node.nodeType === Node.TEXT_NODE) addWords(node.textContent, false);
+      else addWords(node.textContent, node.tagName === "EM");
     });
+    statement.replaceChildren(frag);
     const ink = getComputedStyle(root).getPropertyValue("--ink").trim();
     const accent = getComputedStyle(root).getPropertyValue("--accent").trim();
     const tl = gsap.timeline({ scrollTrigger: { trigger: ".statement", start: "top top", end: "+=140%", pin: true, scrub: 0.5, anticipatePin: 1 } });
@@ -226,10 +186,10 @@ function setupScroll() {
     tl.to({}, { duration: 1 });
   }
 
-  // Line reveals for section titles.
-  const splitTargets = qa("[data-lines]");
+  // Line reveals for titles.
   if (typeof SplitText !== "undefined") {
-    splitTargets.forEach((el) => {
+    qa("[data-lines]").forEach((el) => {
+      if (el.closest(".hero")) return;
       SplitText.create(el, {
         type: "lines", mask: "lines", linesClass: "sl", autoSplit: true,
         onSplit: (self) => gsap.from(self.lines, { yPercent: 110, duration: 1.1, ease: "power4.out", stagger: 0.09, scrollTrigger: { trigger: el, start: "top 88%", once: true } }),
@@ -239,180 +199,37 @@ function setupScroll() {
 
   // Generic reveals.
   qa("[data-reveal]").forEach((el) => {
-    gsap.from(el, { opacity: 0, y: 40, duration: 1, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 85%", once: true } });
+    gsap.from(el, { opacity: 0, y: 40, duration: 1, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 88%", once: true } });
   });
-  qa(".statement-foot, .netix-text, .contact-text, .contact-links, .panel-body").forEach((el) => {
-    if (el.closest(".statement")) return;
-    gsap.from(el, { opacity: 0, y: 32, duration: 1, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 90%", once: true } });
-  });
-
-  // Practice: horizontal scroll on wide screens, stacked reveals otherwise.
-  const track = q("[data-track]");
-  if (!track) return;
-  const panels = qa("[data-panel]");
-  const counter = q("[data-panel-index]");
-  mm.add("(min-width: 1024px)", () => {
-    const gutter = () => parseFloat(getComputedStyle(root).getPropertyValue("--gutter")) || 24;
-    const distance = () => {
-      const last = panels[panels.length - 1];
-      const width = last.getBoundingClientRect().right - track.getBoundingClientRect().left;
-      return Math.max(0, width + gutter() - window.innerWidth);
-    };
-    const tween = gsap.to(track, {
-      x: () => -distance(), ease: "none",
-      scrollTrigger: {
-        trigger: ".practice", start: "top top", end: () => `+=${distance() + window.innerHeight * 0.5}`,
-        pin: true, scrub: 0.6, invalidateOnRefresh: true, anticipatePin: 1,
-        onUpdate: (self) => { if (counter) counter.textContent = String(Math.min(panels.length, 1 + Math.round(self.progress * (panels.length - 1)))).padStart(2, "0"); },
-      },
-    });
-    panels.forEach((panel) => {
-      gsap.fromTo(panel, { opacity: 0.25, scale: 0.92, rotateY: 6 }, { opacity: 1, scale: 1, rotateY: 0, ease: "none", scrollTrigger: { trigger: panel, containerAnimation: tween, start: "left 95%", end: "left 45%", scrub: true } });
-      const visual = q(".panel-visual", panel);
-      gsap.fromTo(visual, { x: 80 }, { x: -40, ease: "none", scrollTrigger: { trigger: panel, containerAnimation: tween, start: "left 100%", end: "right 0%", scrub: true } });
-    });
-    return () => gsap.set(track, { clearProps: "transform" });
-  });
-  mm.add("(max-width: 1023px)", () => {
-    panels.forEach((panel) => gsap.from(panel, { opacity: 0, y: 48, duration: 1, ease: "power3.out", scrollTrigger: { trigger: panel, start: "top 88%", once: true } }));
+  qa(".section-intro, .contact-text, .contact-links").forEach((el) => {
+    gsap.from(el, { opacity: 0, y: 28, duration: 1, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 92%", once: true } });
   });
 
-  // Trajectory rail draws as you pass.
-  const rail = q("[data-tl-line]");
-  if (rail) gsap.to(rail, { scaleY: 1, ease: "none", scrollTrigger: { trigger: ".timeline", start: "top 70%", end: "bottom 60%", scrub: true } });
-
-  // Parallax decor.
-  qa("[data-parallax]").forEach((el) => {
-    const amount = Number(el.dataset.parallax) || -10;
-    gsap.fromTo(el, { yPercent: -amount, xPercent: -6 }, { yPercent: amount, xPercent: 6, ease: "none", scrollTrigger: { trigger: el.closest("section") || el, start: "top bottom", end: "bottom top", scrub: true } });
-  });
-
-  // Contact title scales in from the depth.
-  if (q(".contact-title")) gsap.from(".contact-title", { scale: 0.86, opacity: 0.2, transformOrigin: "left bottom", ease: "none", scrollTrigger: { trigger: ".contact", start: "top 90%", end: "top 30%", scrub: true } });
-}
-
-/* ---- Panel visuals ----------------------------------------------------------------- */
-function setupVisuals() {
-  // Pointer-following glow on the panels.
-  if (finePointer) {
-    qa(".panel").forEach((panel) => {
-      panel.addEventListener("pointermove", (e) => {
-        const r = panel.getBoundingClientRect();
-        panel.style.setProperty("--mx", `${((e.clientX - r.left) / r.width) * 100}%`);
-        panel.style.setProperty("--my", `${((e.clientY - r.top) / r.height) * 100}%`);
+  // Stack: the blocks grow in from the left, their tools follow.
+  qa("[data-block]").forEach((block, i) => {
+    const tl = gsap.timeline({ scrollTrigger: { trigger: block, start: "top 90%", once: true } });
+    tl.from(block, { scaleX: 0.08, opacity: 0, duration: 1.1, ease: "power4.out", delay: i * 0.04 })
+      .from(qa(".block-main > *, .block-figure, .block-lead", block), { opacity: 0, y: 14, duration: 0.6, stagger: 0.06, ease: "power3.out" }, "-=0.55")
+      .from(qa(".block-tools li", block), { opacity: 0, y: 8, scale: 0.9, duration: 0.5, stagger: 0.04, ease: "back.out(2)" }, "-=0.5");
+    if (finePointer) {
+      const rx = gsap.quickTo(block, "rotationX", { duration: 0.5, ease: "power3" });
+      const ry = gsap.quickTo(block, "rotationY", { duration: 0.5, ease: "power3" });
+      gsap.set(block, { transformPerspective: 1200, transformOrigin: "center" });
+      block.addEventListener("pointermove", (e) => {
+        const r = block.getBoundingClientRect();
+        ry(((e.clientX - r.left) / r.width - 0.5) * 5);
+        rx(-((e.clientY - r.top) / r.height - 0.5) * 4);
       }, { passive: true });
-    });
-  }
-
-  // Fleet: 40 devices coming into compliance in waves.
-  const fleet = q("[data-fleet]");
-  const fleetCount = q("[data-fleet-count]");
-  if (fleet) {
-    const tiles = Array.from({ length: 40 }, () => { const i = document.createElement("i"); fleet.append(i); return i; });
-    if (!motion) {
-      tiles.forEach((t) => t.classList.add("on"));
-      if (fleetCount) fleetCount.textContent = "40";
-    } else {
-      let order = [];
-      let n = 0;
-      let timer = 0;
-      const reset = () => { order = tiles.map((_, i) => i).sort(() => Math.random() - 0.5); n = 0; tiles.forEach((t) => t.classList.remove("on", "warn")); };
-      const step = () => {
-        if (n >= tiles.length) { timer = setTimeout(() => { reset(); step(); }, 1800); return; }
-        const t = tiles[order[n++]];
-        t.classList.add(Math.random() < 0.08 ? "warn" : "on");
-        if (fleetCount) fleetCount.textContent = String(tiles.filter((x) => x.classList.contains("on")).length);
-        timer = setTimeout(step, 90 + Math.random() * 140);
-      };
-      const io = new IntersectionObserver(([e]) => { clearTimeout(timer); if (e.isIntersecting) { reset(); step(); } });
-      io.observe(fleet);
+      block.addEventListener("pointerleave", () => { rx(0); ry(0); });
     }
-  }
+  });
 
-  // Chart: a drifting sign-in sparkline.
-  const canvas = q("[data-chart]");
-  if (canvas) {
-    const ctx = canvas.getContext("2d");
-    const N = 42;
-    const data = Array.from({ length: N }, (_, i) => 0.45 + 0.25 * Math.sin(i / 4) + Math.random() * 0.15);
-    let offset = 0, raf = 0, last = 0, w = 0, h = 0, dpr = 1;
-    const accent = getComputedStyle(root).getPropertyValue("--accent").trim();
-    const blue = getComputedStyle(root).getPropertyValue("--accent-2").trim();
-    const resize = () => {
-      const r = canvas.getBoundingClientRect();
-      dpr = Math.min(devicePixelRatio || 1, 2);
-      w = Math.round(r.width * dpr); h = Math.round(r.height * dpr);
-      if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
-    };
-    const draw = () => {
-      ctx.clearRect(0, 0, w, h);
-      const padX = 24 * dpr, padT = 40 * dpr, padB = 36 * dpr;
-      const step = (w - padX * 2) / (N - 2);
-      const y = (v) => padT + (1 - v) * (h - padT - padB);
-      const x = (i) => padX + (i - offset) * step;
-      // Secondary series as bars.
-      ctx.fillStyle = blue;
-      ctx.globalAlpha = 0.18;
-      for (let i = 0; i < N; i++) {
-        const bh = (data[i] * 0.5) * (h - padT - padB);
-        ctx.fillRect(x(i) - step * 0.28, h - padB - bh, step * 0.56, bh);
-      }
-      ctx.globalAlpha = 1;
-      // Area + line.
-      ctx.beginPath();
-      ctx.moveTo(x(0), y(data[0]));
-      for (let i = 1; i < N; i++) {
-        const cx = (x(i - 1) + x(i)) / 2;
-        ctx.bezierCurveTo(cx, y(data[i - 1]), cx, y(data[i]), x(i), y(data[i]));
-      }
-      const grad = ctx.createLinearGradient(0, padT, 0, h - padB);
-      grad.addColorStop(0, "rgba(198,255,74,0.28)");
-      grad.addColorStop(1, "rgba(198,255,74,0)");
-      ctx.save();
-      ctx.lineTo(x(N - 1), h - padB); ctx.lineTo(x(0), h - padB); ctx.closePath();
-      ctx.fillStyle = grad; ctx.fill();
-      ctx.restore();
-      ctx.beginPath();
-      ctx.moveTo(x(0), y(data[0]));
-      for (let i = 1; i < N; i++) {
-        const cx = (x(i - 1) + x(i)) / 2;
-        ctx.bezierCurveTo(cx, y(data[i - 1]), cx, y(data[i]), x(i), y(data[i]));
-      }
-      ctx.strokeStyle = accent; ctx.lineWidth = 2 * dpr; ctx.lineJoin = "round"; ctx.stroke();
-      // Live marker.
-      const lx = x(N - 2), ly = y(data[N - 2]);
-      ctx.fillStyle = accent;
-      ctx.beginPath(); ctx.arc(lx, ly, 4 * dpr, 0, Math.PI * 2); ctx.fill();
-      ctx.globalAlpha = 0.25; ctx.beginPath(); ctx.arc(lx, ly, 12 * dpr, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1;
-      // Axis labels.
-      ctx.fillStyle = "rgba(170,177,191,0.7)"; ctx.font = `${10 * dpr}px "Geist Mono", monospace`; ctx.textAlign = "left";
-      ctx.fillText("sign-ins / h", padX, 22 * dpr);
-      ctx.textAlign = "right"; ctx.fillText("live", w - padX, 22 * dpr);
-    };
-    const loop = (now) => {
-      raf = 0;
-      const dt = Math.min(0.05, (now - last) / 1000); last = now;
-      offset += dt * 1.1;
-      while (offset >= 1) {
-        offset -= 1;
-        const prev = data[data.length - 1];
-        data.shift();
-        data.push(Math.min(0.95, Math.max(0.1, prev + (Math.random() - 0.5) * 0.22 + (0.5 - prev) * 0.08)));
-      }
-      draw();
-      if (visible && !document.hidden) raf = requestAnimationFrame(loop);
-    };
-    let visible = false;
-    const ro = new ResizeObserver(() => { resize(); draw(); });
-    ro.observe(canvas);
-    if (motion) {
-      new IntersectionObserver(([e]) => {
-        visible = e.isIntersecting;
-        if (visible && !raf) { last = performance.now(); raf = requestAnimationFrame(loop); }
-      }).observe(canvas);
-      document.addEventListener("visibilitychange", () => { if (!document.hidden && visible && !raf) { last = performance.now(); raf = requestAnimationFrame(loop); } });
-    }
-  }
+  // Career rail draws as you pass.
+  const rail = q("[data-rail-line]");
+  if (rail) gsap.to(rail, { scaleY: 1, ease: "none", scrollTrigger: { trigger: ".rail-wrap", start: "top 72%", end: "bottom 60%", scrub: true } });
+
+  // Contact title rises from the depth.
+  if (q(".contact-title")) gsap.from(".contact-title", { scale: 0.88, opacity: 0.2, transformOrigin: "left bottom", ease: "none", scrollTrigger: { trigger: ".contact", start: "top 90%", end: "top 30%", scrub: true } });
 }
 
 /* ---- Cursor & magnetic buttons -------------------------------------------------------- */
@@ -433,9 +250,9 @@ function setupPointer() {
       dx(e.clientX); dy(e.clientY); rx(e.clientX); ry(e.clientY);
     }, { passive: true });
     document.addEventListener("pointerover", (e) => {
-      const t = e.target.closest("a, button, [role=option], input");
+      const t = e.target.closest("a, button, [role=option], [role=tab], input");
       cursor.classList.toggle("is-hover", !!t);
-      if (label) label.textContent = t?.dataset.cursor || (t ? "Go" : "");
+      if (label) label.textContent = t?.dataset.cursor || (t ? (t.getAttribute("role") === "tab" ? "Run" : "Go") : "");
     });
     window.addEventListener("pointerdown", () => cursor.classList.add("is-down"));
     window.addEventListener("pointerup", () => cursor.classList.remove("is-down"));
@@ -460,8 +277,29 @@ function setupPalette() {
   const dialog = q("#palette");
   if (!dialog || typeof dialog.showModal !== "function") return;
   const input = q("[data-palette-input]", dialog);
-  const items = qa("[data-cmd]", dialog);
+  const list = q("[data-palette-list]", dialog);
   const empty = q(".palette-empty", dialog);
+  const sessionColour = Object.fromEntries(SESSIONS.map((s) => [s.id, s.colour]));
+
+  const items = COMMANDS.map((c) => {
+    const li = document.createElement("li");
+    li.setAttribute("role", "option");
+    li.dataset.cmd = c.cmd;
+    if (c.arg) li.dataset.arg = c.arg;
+    li.dataset.keys = c.keys || "";
+    if (c.cmd === "session") {
+      const chip = document.createElement("span");
+      chip.className = `chip is-${sessionColour[c.arg] || "mint"}`;
+      chip.textContent = c.arg;
+      li.append(chip);
+    }
+    const label = document.createElement("span");
+    label.textContent = c.label;
+    li.append(label);
+    if (c.kbd) { const k = document.createElement("kbd"); k.textContent = c.kbd; li.append(k); }
+    list.append(li);
+    return li;
+  });
   let active = 0;
 
   const visibleItems = () => items.filter((li) => !li.hidden);
@@ -491,6 +329,7 @@ function setupPalette() {
     close();
     switch (cmd) {
       case "goto": scrollToTarget(arg); history.replaceState(null, "", arg); break;
+      case "session": consoleCtl?.select(arg); scrollToTarget("#top"); q(`#tab-${arg}`)?.focus({ preventScroll: true }); break;
       case "open": window.open(arg, "_blank", "noopener"); break;
       case "download": { const a = document.createElement("a"); a.href = arg; a.download = ""; document.body.append(a); a.click(); a.remove(); break; }
       case "copy": navigator.clipboard?.writeText(arg).then(() => toast("Link copied"), () => toast("Couldn't copy")); break;
@@ -519,13 +358,14 @@ function setupPalette() {
 
 /* ---- Go ------------------------------------------------------------------------------------ */
 (async () => {
-  setupVisuals();
   setupPalette();
   setupPointer();
   await document.fonts?.ready;
   setupScroll();
   const booted = await runBoot();
   if (booted && lenis) lenis.scrollTo(0, { immediate: true });
-  await heroIntro();
+  const intro = heroIntro();
+  setTimeout(() => consoleCtl?.start(), motion ? 500 : 0);
+  await intro;
   if (hasGsap) ScrollTrigger.refresh();
 })();

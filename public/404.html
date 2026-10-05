@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Access blocked — Ryan McDowell</title>
   <meta name="robots" content="noindex">
-  <meta name="theme-color" content="#06070a">
+  <meta name="theme-color" content="#0b1817">
   <meta name="color-scheme" content="dark">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/styles.css">
@@ -17,30 +17,27 @@
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
-  <div class="grain" aria-hidden="true"></div>
-  <header class="hud">
+  <header class="top">
     <a class="brand" href="/" aria-label="Ryan McDowell, home">
-      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7"/><path d="M9 22.5 16 9.5l7 13M9 22.5h14"/><circle cx="9" cy="22.5" r="2.4"/><circle cx="23" cy="22.5" r="2.4"/><circle cx="16" cy="9.5" r="2.4"/></svg>
-      <span class="brand-text mono">mcdowell<span class="dim">.dev</span></span>
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9"/><path d="M9 21.5 16 10.5l7 11"/><path d="M12.5 21.5h7"/></svg>
+      <span class="brand-text">Ryan McDowell</span>
     </a>
-    <nav class="hud-nav" aria-label="Sections">
+    <nav class="top-nav" aria-label="Sections">
       <a href="/#about">About</a>
-      <a href="/#practice">Practice</a>
-      <a href="/#trajectory">Trajectory</a>
-      <a href="/#netix">Netix</a>
+      <a href="/#stack">Stack</a>
+      <a href="/#career">Career</a>
       <a href="/#contact">Contact</a>
     </nav>
-    <div class="hud-right"></div>
+    <div class="top-right"></div>
   </header>
 
   <main id="main" class="nf">
-    <p class="nf-404 mono" aria-hidden="true">404</p>
-    <p class="section-label mono"><span>404</span> Conditional Access</p>
+    <p class="section-label"><span class="chip is-red">404</span> Conditional Access</p>
     <h1 class="nf-title">Access <em>blocked.</em></h1>
-    <div class="decision mono" role="group" aria-label="Decision details">
+    <div class="decision is-red" role="group" aria-label="Decision details">
       <div class="decision-head"><span>Sign-in decision</span><b>Blocked</b></div>
       <dl>
-        <dt>Resource</dt><dd><span data-edge="path">this page</span></dd>
+        <dt>Resource</dt><dd><span class="mono" data-edge="path">this page</span></dd>
         <dt>Policy</dt><dd>Require resource to exist</dd>
         <dt>Result</dt><dd><span class="code">404</span> · the page has moved or never existed</dd>
         <dt>Grant controls</dt><dd>0 of 1 satisfied</dd>

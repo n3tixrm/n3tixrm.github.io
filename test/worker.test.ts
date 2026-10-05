@@ -24,12 +24,32 @@ describe("homepage", () => {
     expect(html).toContain(`<span data-edge="year">${new Date().getUTCFullYear()}</span>`);
   });
 
-  it("stamps the Cloudflare colo into the HUD and footer", async () => {
+  it("stamps the Cloudflare colo into the console chrome and footer", async () => {
     const req = new Request(`${BASE}/`, { cf: { colo: "LHR" } } as RequestInit);
     const html = await (await exports.default.fetch(req)).text();
     expect(html).toContain('data-edge="colo">LHR</span>');
     expect(html.match(/data-edge="colo">LHR<\/span>/g)?.length).toBeGreaterThanOrEqual(2);
     expect(html).not.toContain("the edge</span>");
+  });
+
+  it("renders the content module into the page", async () => {
+    const html = await (await get("/")).text();
+    // Stack: five colour blocks with their tools and the one real figure.
+    expect(html.match(/<li class="block is-(blue|mint|purple|red|yellow)"/g)?.length).toBe(5);
+    expect(html).toContain("Microsoft Intune");
+    expect(html).toContain("SentinelOne");
+    expect(html).toContain("35,000+");
+    // Career path, grouped by employer, most recent first, no dates.
+    expect(html.indexOf("Netix Digital</a></h3>")).toBeLessThan(html.indexOf("NEXT Retail</h3>"));
+    expect(html).toContain("Cyber Security Architect");
+    expect(html).toContain("Workplace Technology Lead");
+    expect(html).not.toMatch(/\b20[12]\d\s*[–—-]\s*(20[12]\d|present)/i);
+    // Links and the completed first console session for readers without JavaScript.
+    expect(html).toContain('href="/ryan-mcdowell.vcf" download');
+    expect(html).toContain("Connect-MgGraph");
+    expect(html).toContain('<span class="t-kv-v">Modern Workplace Architect</span>');
+    // Console tabs form a tablist.
+    expect(html.match(/role="tab"/g)?.length).toBe(5);
   });
 
   it("keeps every page free of inline scripts and styles, so the CSP holds", async () => {
@@ -51,7 +71,7 @@ describe("homepage", () => {
 
 describe("static assets", () => {
   it("caches fonts immutably", async () => {
-    const res = await get("/fonts/geist-latin-wght-normal.woff2");
+    const res = await get("/fonts/inter-tight-latin-wght-normal.woff2");
     expect(res.status).toBe(200);
     expect(res.headers.get("Cache-Control")).toContain("immutable");
     await res.arrayBuffer();

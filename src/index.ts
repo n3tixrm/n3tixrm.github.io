@@ -1,3 +1,4 @@
+import { ContentRender } from "./render";
 import { LINKS, SITE, VCARD_PATHS, vcard } from "./site";
 
 const CSP = [
@@ -96,6 +97,9 @@ export default {
 
     const colo = (request.cf as { colo?: string } | undefined)?.colo;
     return new HTMLRewriter()
+      // Content sections (stack, career, links, the console fallback) come from
+      // public/content.js, the same module the browser uses for the console.
+      .on("[data-render]", new ContentRender())
       .on(
         "[data-edge]",
         new EdgeStamp({
