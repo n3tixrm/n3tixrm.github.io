@@ -18,16 +18,26 @@ It runs entirely on [Cloudflare Workers](https://developers.cloudflare.com/worke
 
 Links and contact-card details live in [`src/site.ts`](src/site.ts).
 
+## The front end
+
+The site is a dark, HUD-styled single page ("control plane" concept): a WebGL network field in the hero that reacts to the cursor and scroll, a short skippable boot sequence, scroll-driven sections (pinned statement with word-by-word reveal, horizontal practice panels, drawn timeline, parallax), live panel visuals (Conditional Access rings, device fleet, sign-in sparkline, Graph pipeline), a ⌘K command palette, magnetic buttons and a custom cursor. It is plain HTML, CSS and JavaScript with two vendored libraries; there is no build step.
+
+- `prefers-reduced-motion` (or the footer's **Motion** toggle, stored in `localStorage`) turns off the boot sequence, smooth scrolling, scroll choreography, the cursor and all looping animation. The WebGL field renders one static frame.
+- Everything reads without JavaScript; JS only adds motion and the palette.
+- Heavy effects pause when offscreen or when the tab is hidden, the WebGL canvas caps its pixel ratio and lowers resolution on slow devices, and the boot overlay has a timeout so it can never trap the page.
+
 ## Project layout
 
 ```
 public/            static site, deployed as-is
   index.html       the page
-  styles.css       design tokens, light and dark themes, layout
-  app.js           progressive enhancement: KQL console, ⌘K palette, theme toggle
-  theme.js         applies a saved theme before first paint
-  404.html
-  fonts/           self-hosted Instrument Serif, Geist, Geist Mono (OFL)
+  404.html         "Access blocked": a Conditional Access-style not-found page
+  styles.css       design tokens, layout, section styles, reduced-motion rules
+  boot.js          runs before first paint: motion preference and boot-overlay flag
+  app.js           choreography: boot, hero intro, GSAP/ScrollTrigger scenes, visuals, palette, cursor
+  field.js         the WebGL hero shader (no dependencies)
+  vendor/          GSAP 3.15 (core, ScrollTrigger, SplitText) and Lenis 1.3, see vendor/LICENSES.md
+  fonts/           self-hosted Archivo (variable width/weight), Geist, Geist Mono (OFL)
   og.png           social preview, rendered from scripts/og.html
 src/               the Worker
 test/              Worker tests, run inside workerd via @cloudflare/vitest-pool-workers
@@ -35,7 +45,7 @@ scripts/           source and renderer for og.png and apple-touch-icon.png
 wrangler.jsonc     Worker config, assets binding, custom domains
 ```
 
-The site has no build step and no client framework. Everything loads from its own origin, so the CSP can stay at `'self'`.
+Everything loads from its own origin, so the CSP stays at `'self'` with no inline scripts or styles (the tests check this). Fonts and the versioned vendor files are served with a one-year immutable cache.
 
 ## Develop
 
@@ -68,4 +78,4 @@ Until then, the Worker is still reachable on its `*.workers.dev` URL.
 
 ## Licence
 
-Code is MIT (see [LICENSE](LICENSE)). Fonts are under the SIL Open Font License; see [`public/fonts/OFL.txt`](public/fonts/OFL.txt).
+Code is MIT (see [LICENSE](LICENSE)). Fonts are under the SIL Open Font License; see [`public/fonts/OFL.txt`](public/fonts/OFL.txt). Vendored libraries keep their own licences; see [`public/vendor/LICENSES.md`](public/vendor/LICENSES.md).

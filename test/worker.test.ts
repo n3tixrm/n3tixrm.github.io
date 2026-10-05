@@ -24,10 +24,22 @@ describe("homepage", () => {
     expect(html).toContain(`<span data-edge="year">${new Date().getUTCFullYear()}</span>`);
   });
 
-  it("stamps the Cloudflare colo into the footer", async () => {
+  it("stamps the Cloudflare colo into the HUD and footer", async () => {
     const req = new Request(`${BASE}/`, { cf: { colo: "LHR" } } as RequestInit);
     const html = await (await exports.default.fetch(req)).text();
     expect(html).toContain('data-edge="colo">LHR</span>');
+    expect(html.match(/data-edge="colo">LHR<\/span>/g)?.length).toBeGreaterThanOrEqual(2);
+    expect(html).not.toContain("the edge</span>");
+  });
+
+  it("keeps every page free of inline scripts and styles, so the CSP holds", async () => {
+    for (const path of ["/", "/does-not-exist"]) {
+      const html = await (await get(path, { headers: { "Sec-Fetch-Mode": "navigate" } })).text();
+      expect(html).not.toMatch(/<style[\s>]/);
+      expect(html).not.toMatch(/ style="/);
+      expect(html).not.toMatch(/<script(?![^>]*\bsrc=)(?![^>]*application\/ld\+json)/);
+      expect(html).not.toMatch(/\bon[a-z]+="/);
+    }
   });
 
   it("sends no body for HEAD", async () => {
@@ -41,6 +53,14 @@ describe("static assets", () => {
   it("caches fonts immutably", async () => {
     const res = await get("/fonts/geist-latin-wght-normal.woff2");
     expect(res.status).toBe(200);
+    expect(res.headers.get("Cache-Control")).toContain("immutable");
+    await res.arrayBuffer();
+  });
+
+  it("caches versioned vendor scripts immutably", async () => {
+    const res = await get("/vendor/gsap-3.15.0.min.js");
+    expect(res.status).toBe(200);
+    expect(res.headers.get("Content-Type")).toContain("javascript");
     expect(res.headers.get("Cache-Control")).toContain("immutable");
     await res.arrayBuffer();
   });
@@ -86,7 +106,7 @@ describe("routing", () => {
     const res = await get("/does-not-exist", { headers: { "Sec-Fetch-Mode": "navigate" } });
     expect(res.status).toBe(404);
     const html = await res.text();
-    expect(html).toContain("0 rows");
+    expect(html).toContain("Access <em>blocked.</em>");
     expect(html).toContain('data-edge="path">/does-not-exist</span>');
   });
 

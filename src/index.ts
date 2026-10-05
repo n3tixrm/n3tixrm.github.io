@@ -41,7 +41,8 @@ function redirect(location: string, status: 301 | 302): Response {
 }
 
 function cacheControlFor(pathname: string, isHtml: boolean): string {
-  if (pathname.startsWith("/fonts/")) return "public, max-age=31536000, immutable";
+  // Fonts and vendored libraries carry a version or never change: cache them for a year.
+  if (pathname.startsWith("/fonts/") || pathname.startsWith("/vendor/")) return "public, max-age=31536000, immutable";
   if (isHtml) return "public, max-age=0, must-revalidate";
   return "public, max-age=3600, stale-while-revalidate=86400";
 }
