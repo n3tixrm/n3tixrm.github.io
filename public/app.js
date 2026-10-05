@@ -152,8 +152,12 @@ function setupScroll() {
   // Hero: the console recedes as you scroll away.
   const hero = q(".hero");
   if (hero) gsap.timeline({ scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: true } })
-    .to(".console", { y: 120, scale: 0.96, opacity: 0.25, ease: "none" }, 0)
-    .to(".hero-head, .hero-tag", { opacity: 0, y: -30, ease: "none" }, 0);
+    .to(".console", { y: 60, scale: 0.97, opacity: 0.25, ease: "none" }, 0)
+    .to(".hero-head", { opacity: 0, y: -30, ease: "none" }, 0);
+  // The tagline sits below the console, so on tall (mobile) heroes it would still be
+  // visible when it reaches the header. Fade it on its own, before it gets there.
+  // fromTo, because the intro may still be fading the tagline in when this is created.
+  if (q(".hero-tag")) gsap.fromTo(".hero-tag", { opacity: 1 }, { opacity: 0, ease: "none", immediateRender: false, scrollTrigger: { trigger: ".hero-tag", start: "top 75%", end: "top 40%", scrub: true } });
 
   // Statement: pinned, words light up as you scroll; <em> words go mint.
   const statement = q("[data-words]");
