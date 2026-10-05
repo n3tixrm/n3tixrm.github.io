@@ -223,13 +223,14 @@ html.is-booting { overflow: hidden; }
 .console-progress { height: 3px; background: var(--c); transform: scaleX(0); transform-origin: left; transition: transform 0.7s var(--ease), background 0.3s; }
 .console-body { position: relative; min-height: 0; min-width: 0; background: var(--bg-2); }
 .term {
-  height: 100%; max-height: 100%; min-width: 0; overflow: auto; overscroll-behavior: contain;
+  height: 100%; max-height: 100%; min-width: 0; overflow: hidden auto; overscroll-behavior: contain;
+  overflow-wrap: anywhere;
   padding: 22px 24px 28px;
   font-size: clamp(12.5px, 0.95vw, 14px); line-height: 1.7; color: var(--ink-2);
   scrollbar-width: thin; scrollbar-color: var(--bg-4) transparent;
 }
 .term:focus-visible { outline-offset: -3px; }
-.t-line { white-space: pre; }
+.t-line { white-space: pre-wrap; }
 .t-prompt { color: var(--ink); margin-top: 2px; }
 .t-ps { color: var(--c); font-weight: 600; }
 .t-ps .tk-op { color: var(--ink-3); font-weight: 400; }
@@ -267,7 +268,7 @@ html.is-booting { overflow: hidden; }
 /* Table */
 .t-table { display: grid; column-gap: 28px; row-gap: 2px; width: max-content; max-width: 100%; }
 .t-tr { display: grid; grid-template-columns: subgrid; grid-column: 1 / -1; }
-.t-td { padding: 4px 0; white-space: nowrap; }
+.t-td { padding: 4px 0; }
 .t-th .t-td { color: var(--ink-3); font-size: 0.85em; letter-spacing: 0.08em; text-transform: uppercase; border-bottom: 1px solid var(--line-2); padding-bottom: 6px; margin-bottom: 4px; }
 .t-td.is-first { color: var(--ink); font-weight: 500; }
 .t-table:not(.is-mono) .t-td.is-first { font-family: var(--body); font-size: 1.08em; }
@@ -313,7 +314,7 @@ html.is-booting { overflow: hidden; }
 .t-draw { transition: stroke-dashoffset 1.3s var(--ease); }
 
 /* JSON tree */
-.t-json { white-space: pre; line-height: 1.6; }
+.t-json { white-space: pre-wrap; line-height: 1.6; }
 .t-j-row { color: var(--ink-2); }
 .t-j-row .tk-prop { color: var(--c); }
 .t-j-row .tk-str { color: var(--ink); }
