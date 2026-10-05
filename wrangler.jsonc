@@ -18,5 +18,14 @@
   ],
   "workers_dev": true,
   "preview_urls": true,
-  "observability": { "enabled": true }
+  "observability": { "enabled": true },
+  "env": {
+    // `npm run deploy:preview`: a routeless copy on *.workers.dev for previewing
+    // before DNS moves. Routes are inherited by environments, so clear them here.
+    "preview": {
+      "workers_dev": true,
+      "routes": [],
+      "observability": { "enabled": true }
+    }
+  }
 }

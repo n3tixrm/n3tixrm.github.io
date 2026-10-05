@@ -10,7 +10,8 @@
     "deploy": "wrangler deploy",
     "check": "tsc --noEmit",
     "test": "vitest run",
-    "og": "node scripts/render-images.mjs"
+    "og": "node scripts/render-images.mjs",
+    "deploy:preview": "wrangler deploy --env preview"
   },
   "devDependencies": {
     "@cloudflare/vitest-pool-workers": "^0.22.0",
