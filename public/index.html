@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Ryan McDowell · Modern Workplace Architect</title>
+  <meta name="description" content="Ryan McDowell is a Microsoft 365 specialist and Modern Workplace Architect, and the founder of Netix Digital, a Microsoft-first, cybersecurity-led managed service provider for UK businesses.">
+  <link rel="canonical" href="https://mcdowell.dev/">
+  <meta name="theme-color" content="#0b1817">
+  <meta name="color-scheme" content="dark">
+
+  <meta property="og:type" content="profile">
+  <meta property="og:site_name" content="Ryan McDowell">
+  <meta property="og:title" content="Ryan McDowell · Modern Workplace Architect">
+  <meta property="og:description" content="Microsoft 365 specialist. Founder of Netix Digital. Modern workplaces that are secure by design, measured end to end.">
+  <meta property="og:url" content="https://mcdowell.dev/">
+  <meta property="og:image" content="https://mcdowell.dev/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Ryan McDowell, Modern Workplace Architect. Possibility through technology.">
+  <meta property="profile:first_name" content="Ryan">
+  <meta property="profile:last_name" content="McDowell">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="preload" href="/fonts/inter-tight-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/geist-mono-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/styles.css?v=2">
+  <script src="/boot.js?v=2"></script>
+  <script src="/vendor/gsap-3.15.0.min.js" defer></script>
+  <script src="/vendor/scrolltrigger-3.15.0.min.js" defer></script>
+  <script src="/vendor/splittext-3.15.0.min.js" defer></script>
+  <script src="/vendor/lenis-1.3.26.min.js" defer></script>
+  <script src="/app.js?v=2" type="module"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Ryan McDowell",
+    "url": "https://mcdowell.dev/",
+    "jobTitle": "Modern Workplace Architect",
+    "description": "Microsoft 365 specialist and founder of Netix Digital.",
+    "worksFor": { "@type": "Organization", "name": "Netix Digital", "url": "https://netix.digital" },
+    "knowsAbout": ["Microsoft 365", "Microsoft Entra ID", "Microsoft Intune", "Conditional Access", "Zero trust", "Google Workspace", "ChromeOS", "PowerShell", "Microsoft Graph", "Kusto Query Language", "Grafana", "Datadog"],
+    "sameAs": ["https://www.linkedin.com/in/rynm/", "https://github.com/n3tixrm", "https://netix.digital"]
+  }
+  </script>
+</head>
+<body>
+  <!-- Section prose, the stack, the career path and the links are rendered by the
+       Worker from public/content.js into the [data-render] elements below. -->
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="progress" aria-hidden="true"><span></span></div>
+
+  <!-- Connect sequence: shown by boot.js on the first visit of a session, dismissed by app.js. -->
+  <div class="boot" id="boot" aria-hidden="true">
+    <div class="boot-inner">
+      <p class="boot-title">Connecting sessions</p>
+      <ol class="boot-lines mono" id="boot-lines"></ol>
+      <div class="boot-bar"><span></span></div>
+      <p class="boot-skip mono">press any key to skip</p>
+    </div>
+  </div>
+
+  <header class="top">
+    <a class="brand" href="/" aria-label="Ryan McDowell, home">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9"/><rect class="mark-device" x="3.5" y="3.5" width="25" height="19" rx="2.8"/><path class="mark-device" d="M1.5 24.5h29v1.3a2.4 2.4 0 0 1-2.4 2.4H3.9a2.4 2.4 0 0 1-2.4-2.4z"/><g transform="translate(8 5.2) scale(0.5)"><path class="mark-shield" d="M8.5 4.5h5.6a1 1 0 0 1 1 1v21c0 .5-.5.9-.9.7C9.2 25 5.5 20.9 5.5 15.7V7.5a3 3 0 0 1 3-3zM23.5 4.5h-5.6a1 1 0 0 0-1 1v21c0 .5.5.9.9.7 5-2.2 8.7-6.3 8.7-11.5V7.5a3 3 0 0 0-3-3z"/><path class="mark-id" d="M10.6 9.9a2 2 0 1 1 0 4 2 2 0 0 1 0-4zM7.3 20c0-2.6 1.5-4.2 3.3-4.2s3.3 1.6 3.3 4.2zM21.4 9.9a2 2 0 1 1 0 4 2 2 0 0 1 0-4zM18.1 20c0-2.6 1.5-4.2 3.3-4.2s3.3 1.6 3.3 4.2z"/></g></svg>
+      <span class="brand-text">Ryan McDowell</span>
+    </a>
+    <nav class="top-nav" aria-label="Sections">
+      <a href="#about" data-nav>About</a>
+      <a href="#stack" data-nav>Stack</a>
+      <a href="#career" data-nav>Career</a>
+      <a href="#contact" data-nav>Contact</a>
+    </nav>
+    <div class="top-right">
+      <button class="kbd-btn" type="button" data-palette-open aria-label="Open the command palette">
+        <span>Menu</span><kbd class="mono">⌘K</kbd>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- 00 · Hero: the multi-session console -->
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="hero-head">
+        <div class="hero-id">
+          <h1 class="hero-title" id="hero-title" data-lines>Ryan McDowell</h1>
+          <p class="hero-sub" data-render="hero-sub">Modern Workplace Architect · Microsoft 365 Specialist · Founder &amp; Director, Netix Digital</p>
+        </div>
+        <p class="hero-badge chip is-mint"><span class="chip-dot" aria-hidden="true"></span>Open to consulting</p>
+      </div>
+
+      <div class="console is-blue" id="console" data-console data-session="pwsh" aria-label="Interactive console">
+        <div class="console-bar">
+          <div class="console-tabs" role="tablist" aria-label="Console sessions">
+            <button class="tab is-blue is-active" role="tab" type="button" id="tab-pwsh" aria-controls="panel-pwsh" aria-selected="true" tabindex="0"><i aria-hidden="true"></i>pwsh</button>
+            <button class="tab is-mint" role="tab" type="button" id="tab-kql" aria-controls="panel-kql" aria-selected="false" tabindex="-1"><i aria-hidden="true"></i>kql</button>
+            <button class="tab is-yellow" role="tab" type="button" id="tab-gam" aria-controls="panel-gam" aria-selected="false" tabindex="-1"><i aria-hidden="true"></i>gam</button>
+            <button class="tab is-purple" role="tab" type="button" id="tab-graph" aria-controls="panel-graph" aria-selected="false" tabindex="-1"><i aria-hidden="true"></i>graph</button>
+            <button class="tab is-red" role="tab" type="button" id="tab-metrics" aria-controls="panel-metrics" aria-selected="false" tabindex="-1"><i aria-hidden="true"></i>metrics</button>
+          </div>
+          <p class="console-status mono"><span class="status-dot" aria-hidden="true"></span>connected via <span data-edge="colo">the edge</span></p>
+        </div>
+        <div class="console-progress is-blue" data-console-progress aria-hidden="true"></div>
+        <div class="console-body">
+          <div class="term mono" role="tabpanel" id="panel-pwsh" aria-labelledby="tab-pwsh" tabindex="0" data-render="console-fallback"></div>
+          <div class="term mono" role="tabpanel" id="panel-kql" aria-labelledby="tab-kql" tabindex="0" hidden></div>
+          <div class="term mono" role="tabpanel" id="panel-gam" aria-labelledby="tab-gam" tabindex="0" hidden></div>
+          <div class="term mono" role="tabpanel" id="panel-graph" aria-labelledby="tab-graph" tabindex="0" hidden></div>
+          <div class="term mono" role="tabpanel" id="panel-metrics" aria-labelledby="tab-metrics" tabindex="0" hidden></div>
+        </div>
+        <div class="console-foot mono">
+          <span>Microsoft Graph PowerShell · Log Analytics · Google Workspace · Graph API · Datadog</span>
+          <span class="console-hint">sessions take turns · pick a tab to jump in</span>
+        </div>
+      </div>
+      <p class="hero-tag">Possibility through <em>technology.</em></p>
+    </section>
+
+    <!-- 01 · Statement -->
+    <section class="statement" id="about" aria-labelledby="about-title">
+      <div class="statement-pin">
+        <p class="section-label"><span class="chip is-mint">01</span> About</p>
+        <h2 class="sr-only" id="about-title">About</h2>
+        <p class="statement-text" data-words data-render="statement">I build modern workplaces that are <em>secure by design</em>: Microsoft first, <em>Google</em> when it fits, and measured end to end.</p>
+        <div class="statement-foot" data-render="statement-foot">
+          <p>Microsoft 365 specialist and a qualified generalist across the suite.</p>
+          <p>Founder &amp; Director of Netix Digital.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 · Stack -->
+    <section class="stack" id="stack" aria-labelledby="stack-title">
+      <div class="wrap stack-head">
+        <p class="section-label"><span class="chip is-blue">02</span> Stack</p>
+        <h2 class="section-title" id="stack-title" data-lines>Five colours, <em>one</em> secure workplace.</h2>
+        <p class="section-intro">The tools I reach for every week, grouped the same way the console sessions are. Microsoft first, with Google Workspace and ChromeOS where they fit.</p>
+      </div>
+      <ol class="blocks wrap" data-render="stack">
+        <li class="block is-blue"><div class="block-main"><h3 class="block-title">Endpoint &amp; devices</h3></div></li>
+      </ol>
+    </section>
+
+    <!-- 03 · Career path -->
+    <section class="career" id="career" aria-labelledby="career-title">
+      <div class="wrap">
+        <p class="section-label"><span class="chip is-purple">03</span> Career path</p>
+        <h2 class="section-title" id="career-title" data-lines>From enterprise scale to <em>first principles.</em></h2>
+        <div class="rail-wrap">
+          <span class="rail-line" aria-hidden="true"><i data-rail-line></i></span>
+          <ol class="rail" data-render="career">
+            <li class="employer"><h3 class="employer-name">Netix Digital</h3></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 · Contact -->
+    <section class="contact" id="contact" aria-labelledby="contact-title">
+      <div class="wrap">
+        <p class="section-label"><span class="chip is-yellow">04</span> Contact</p>
+        <h2 class="contact-title" id="contact-title" data-lines>Open to <em>consulting.</em></h2>
+        <p class="contact-text">Planning a tenancy, rethinking identity, or want dashboards people actually look at? Let's talk.</p>
+        <div class="contact-links" data-render="links">
+          <a class="btn" href="/linkedin" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer mono">
+    <div class="wrap footer-inner">
+      <p>© <span data-edge="year">2026</span> Ryan McDowell</p>
+      <p class="dim">Served from the edge in <span data-edge="colo">the edge</span></p>
+      <p><a href="https://github.com/n3tixrm/n3tixrm.github.io" rel="noopener">Source</a> · <button type="button" class="link-btn" data-motion-toggle>Motion: <span data-motion-state>on</span></button></p>
+    </div>
+  </footer>
+
+  <!-- Command palette: items come from content.js -->
+  <dialog class="palette" id="palette" aria-label="Command palette">
+    <div class="palette-box">
+      <div class="palette-input-row">
+        <span class="mono dim" aria-hidden="true">&gt;</span>
+        <input class="palette-input" type="text" placeholder="Type a command or search…" autocomplete="off" spellcheck="false" aria-label="Search commands" data-palette-input>
+        <kbd class="mono">Esc</kbd>
+      </div>
+      <ul class="palette-list" role="listbox" data-palette-list></ul>
+      <p class="palette-empty mono dim" hidden>No matching command.</p>
+    </div>
+  </dialog>
+
+  <div class="cursor" aria-hidden="true"><span class="cursor-dot"></span><span class="cursor-ring"><em data-cursor-label></em></span></div>
+  <div class="toast mono" role="status" aria-live="polite"></div>
+</body>
+</html>

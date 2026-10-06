@@ -1,0 +1,32 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "mcdowell-dev",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-15",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "html_handling": "drop-trailing-slash",
+    "not_found_handling": "404-page",
+    // Every request goes through the Worker so it can add security headers,
+    // handle short links and stamp edge metadata into the HTML.
+    "run_worker_first": true
+  },
+  // The site lives on the apex; www is attached so the Worker can 301 it there.
+  "routes": [
+    { "pattern": "mcdowell.dev", "custom_domain": true },
+    { "pattern": "www.mcdowell.dev", "custom_domain": true }
+  ],
+  "workers_dev": true,
+  "preview_urls": true,
+  "observability": { "enabled": true },
+  "env": {
+    // `npm run deploy:preview`: a routeless copy on *.workers.dev for previewing
+    // before DNS moves. Routes are inherited by environments, so clear them here.
+    "preview": {
+      "workers_dev": true,
+      "routes": [],
+      "observability": { "enabled": true }
+    }
+  }
+}
