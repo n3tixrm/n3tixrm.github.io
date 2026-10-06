@@ -12,8 +12,11 @@
     // handle short links and stamp edge metadata into the HTML.
     "run_worker_first": true
   },
-  // Apex only. The Worker still redirects www to the apex if www is ever pointed at it.
-  "routes": [{ "pattern": "mcdowell.dev", "custom_domain": true }],
+  // The site lives on the apex; www is attached so the Worker can 301 it there.
+  "routes": [
+    { "pattern": "mcdowell.dev", "custom_domain": true },
+    { "pattern": "www.mcdowell.dev", "custom_domain": true }
+  ],
   "workers_dev": true,
   "preview_urls": true,
   "observability": { "enabled": true },
